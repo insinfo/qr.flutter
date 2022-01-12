@@ -70,6 +70,7 @@ class QrPainter extends CustomPainter {
   })  : _qr = qr,
         version = qr.typeNumber,
         errorCorrectionLevel = qr.errorCorrectLevel {
+    qrImage = QrImage(qr);
     _calcVersion = version;
     _initPaints();
   }
@@ -132,6 +133,9 @@ class QrPainter extends CustomPainter {
       throw validationResult.error!;
     }
     _qr = validationResult.qrCode;
+    if (_qr != null) {
+      qrImage = QrImage(_qr!);
+    }
     _calcVersion = _qr!.typeNumber;
     _initPaints();
   }
@@ -159,6 +163,8 @@ class QrPainter extends CustomPainter {
           position: position);
     }
   }
+
+  QrImage? qrImage;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -206,11 +212,11 @@ class QrPainter extends CustomPainter {
       emptyPixelPaint = _paintCache.firstPaint(QrCodeElement.codePixelEmpty);
       emptyPixelPaint!.color = emptyColor!;
     }
-    for (var x = 0; x < _qr!.moduleCount; x++) {
-      for (var y = 0; y < _qr!.moduleCount; y++) {
+    for (var x = 0; x < qrImage!.moduleCount; x++) {
+      for (var y = 0; y < qrImage!.moduleCount; y++) {
         // draw the finder patterns independently
         if (_isFinderPatternPosition(x, y)) continue;
-        final paint = _qr!.isDark(y, x) ? pixelPaint : emptyPixelPaint;
+        final paint = qrImage!.isDark(y, x) ? pixelPaint : emptyPixelPaint;
         if (paint == null) continue;
         // paint a pixel
         left = paintMetrics.inset + (x * (paintMetrics.pixelSize + gap));
@@ -258,12 +264,12 @@ class QrPainter extends CustomPainter {
 
   bool _hasAdjacentVerticalPixel(int x, int y, int moduleCount) {
     if (y + 1 >= moduleCount) return false;
-    return _qr!.isDark(y + 1, x);
+    return qrImage!.isDark(y + 1, x);
   }
 
   bool _hasAdjacentHorizontalPixel(int x, int y, int moduleCount) {
     if (x + 1 >= moduleCount) return false;
-    return _qr!.isDark(y, x + 1);
+    return qrImage!.isDark(y, x + 1);
   }
 
   bool _isFinderPatternPosition(int x, int y) {
@@ -450,3 +456,4 @@ class _PaintMetrics {
     _inset = (containerSize - _innerContentSize) / 2;
   }
 }
+
