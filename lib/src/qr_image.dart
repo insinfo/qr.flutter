@@ -18,11 +18,12 @@ import 'qr_versions.dart';
 import 'types.dart';
 import 'validator.dart';
 
+
 /// A widget that shows a QR code.
-class QrImage extends StatefulWidget {
+class QrImageWidget extends StatefulWidget {
   /// Create a new QR code using the [String] data and the passed options (or
   /// using the default options).
-  QrImage({
+  QrImageWidget({
     required String data,
     Key? key,
     this.size,
@@ -53,7 +54,7 @@ class QrImage extends StatefulWidget {
 
   /// Create a new QR code using the [QrCode] data and the passed options (or
   /// using the default options).
-  QrImage.withQr({
+  QrImageWidget.withQr({
     required QrCode qr,
     Key? key,
     this.size,
@@ -91,7 +92,7 @@ class QrImage extends StatefulWidget {
   final Color backgroundColor;
 
   /// The foreground color of the final QR code widget.
-  @Deprecated('use colors in eyeStyle and dataModuleStyle instead')
+  //@Deprecated('use colors in eyeStyle and dataModuleStyle instead')
   final Color? foregroundColor;
 
   /// The QR code version to use.
@@ -149,10 +150,10 @@ class QrImage extends StatefulWidget {
   final QrDataModuleStyle dataModuleStyle;
 
   @override
-  _QrImageState createState() => _QrImageState();
+  _QrImageWidgetState createState() => _QrImageWidgetState();
 }
 
-class _QrImageState extends State<QrImage> {
+class _QrImageWidgetState extends State<QrImageWidget> {
   /// The QR code string data.
   QrCode? _qr;
 
